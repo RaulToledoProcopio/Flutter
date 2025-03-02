@@ -72,111 +72,114 @@ class _MainScreenState extends State<MainScreen> {
   // Formato de la pantalla principal
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: const DecorationImage(
-          image: AssetImage('assets/fondo.jpg'),
-          fit: BoxFit.cover,
-        ),
-        border: Border.all(
-          color: const Color(0xFF582804),
-          width: 15,
-        ),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: const EdgeInsets.all(0.0),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 10,
-            left: 10,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+    return Scaffold(
+      backgroundColor: const Color(0xFF582804),
+      body: Container(
+        decoration: BoxDecoration(
+          image: const DecorationImage(
+            image: AssetImage('assets/fondo.jpg'),
+            fit: BoxFit.cover,
           ),
-          const Positioned(
-            top: 10,
-            left: 0,
-            right: 0,
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Gestor de tareas',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontFamily: 'Chalkboard',
-                  decoration: TextDecoration.none,
+          color: Colors.transparent,
+          border: Border.all(
+            color: const Color(0xFF582804),
+            width: 5,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: const EdgeInsets.all(16.0),
+        child: Stack(
+          children: [
+            Positioned(
+              top: 10,
+              left: 10,
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            const Positioned(
+              top: 10,
+              left: 0,
+              right: 0,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Gestor de tareas',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontFamily: 'Chalkboard',
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF582804),
-                      foregroundColor: Colors.white,
+            Padding(
+              padding: const EdgeInsets.only(top: 60.0),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF582804),
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () async {
+                        String? title = await _showTaskDialog(context);
+                        if (title != null && title.isNotEmpty) {
+                          _addTask(title);
+                        }
+                      },
+                      child: const Text('Añadir Tarea'),
                     ),
-                    onPressed: () async {
-                      String? title = await _showTaskDialog(context);
-                      if (title != null && title.isNotEmpty) {
-                        _addTask(title);
-                      }
-                    },
-                    child: const Text('Añadir Tarea'),
                   ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: tareas.length,
-                    itemBuilder: (context, index) {
-                      final task = tareas[index];
-                      return ListTile(
-                        leading: Checkbox(
-                          value: task.isCompleted,
-                          onChanged: (_) => _toggleCompletion(task),
-                          activeColor: Colors.white,
-                          checkColor: const Color(0xFF0e4935),
-                        ),
-                        title: Text(
-                          task.title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: 'Chalkboard',
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: tareas.length,
+                      itemBuilder: (context, index) {
+                        final task = tareas[index];
+                        return ListTile(
+                          leading: Checkbox(
+                            value: task.isCompleted,
+                            onChanged: (_) => _toggleCompletion(task),
+                            activeColor: Colors.white,
+                            checkColor: const Color(0xFF0e4935),
                           ),
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.white),
-                          onPressed: () => _deleteTask(task),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF582804),
-                      foregroundColor: Colors.white,
+                          title: Text(
+                            task.title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: 'Chalkboard',
+                            ),
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.white),
+                            onPressed: () => _deleteTask(task),
+                          ),
+                        );
+                      },
                     ),
-                    onPressed: _deleteTasks,
-                    child: const Text('Eliminar Tareas Completadas'),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF582804),
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: _deleteTasks,
+                      child: const Text('Eliminar Tareas Completadas'),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
