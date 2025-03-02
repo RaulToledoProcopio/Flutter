@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mi Aplicación',
-      initialRoute: '/login',
+      initialRoute: '/login', // La pantalla inicial es LoginScreen
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/login':
