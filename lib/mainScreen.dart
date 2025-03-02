@@ -42,6 +42,10 @@ class _MainScreenState extends State<MainScreen> {
     final newTask = Tarea(title: title);
     await tareaDao.insertTask(newTask);
     _loadTasks();
+    // Mostrar un SnackBar después de agregar la tarea
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Tarea agregada')),
+    );
   }
 
   // Eliminar las tareas que están marcadas como completadas.
@@ -51,6 +55,11 @@ class _MainScreenState extends State<MainScreen> {
       await tareaDao.deleteTask(task);
     }
     _loadTasks();
+    // Mostrar un SnackBar después de eliminar las tareas completadas
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: Text('Todas las tareas completadas han sido eliminadas')),
+    );
   }
 
   // Cambiar el estado de completado de una tarea.
@@ -193,5 +202,9 @@ class _MainScreenState extends State<MainScreen> {
   Future<void> _deleteTask(Tarea task) async {
     await tareaDao.deleteTask(task);
     _loadTasks();
+    // Mostrar un SnackBar después de eliminar una tarea
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Tarea eliminada')),
+    );
   }
 }
